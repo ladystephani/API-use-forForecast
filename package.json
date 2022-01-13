@@ -1,0 +1,25 @@
+{
+  "name": "API-use-forForecast",
+  "version": "1.0.0",
+  "description": "## Deployed App",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ladystephani/API-use-forForecast.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ladystephani/API-use-forForecast/issues"
+  },
+  "homepage": "https://github.com/ladystephani/API-use-forForecast#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15"
+  }
+}
