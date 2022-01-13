@@ -15,10 +15,19 @@ const cityUVI = document.getElementById("uvi");
 //future
 const futureContainerEl = document.getElementById("future-container");
 
+const storageContainerEl = document.getElementById("storageContainer");
+
 //display helper functions
 const displayCurrent = (cityForecast, city) => {
   //title
   citySearchTerm.textContent = city;
+
+  let savedCitiesArr = localStorage.getItem("city");
+
+  savedCitiesArr = JSON.parse(savedCitiesArr);
+  if (savedCitiesArr !== city) {
+    setLocalStorage(city);
+  }
 
   //name
   cityName.textContent = cityForecast.name;
@@ -177,6 +186,30 @@ const get5 = function (city) {
     .catch((err) => alert("Unable to connect"));
 };
 
+const setLocalStorage = (city) => {
+  localStorage.setItem("city", JSON.stringify(city));
+};
+
+const showLocalStoredCities = () => {
+  let savedCitiesArr = localStorage.getItem("city");
+  if (!savedCitiesArr) {
+    return false;
+  }
+  savedCitiesArr = JSON.parse(savedCitiesArr);
+  console.log(savedCitiesArr);
+
+  for (let i = 0; i < savedCitiesArr.length; i++) {
+    createStorageEl(savedCitiesArr[i]);
+  }
+};
+const createStorageEl = (stored) => {
+  const citySpanEl = document.createElement("li");
+  citySpanEl.classList =
+    "list-item flex-row justify-space-between align-center";
+  citySpanEl.textContent = `${stored}`;
+  storageContainerEl.appendChild(citySpanEl);
+};
+
 // shows both current and future forecast
 const formHandler = (event) => {
   event.preventDefault();
@@ -185,7 +218,8 @@ const formHandler = (event) => {
 
   getCurrent(city);
   get5(city);
+
   cityEl.textContent = "";
 };
-
+document.addEventListener("load", showLocalStoredCities());
 userFormEl.addEventListener("submit", formHandler);
