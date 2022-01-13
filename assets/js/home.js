@@ -221,5 +221,5 @@ const formHandler = (event) => {
 
   cityEl.textContent = "";
 };
-window.addEventListener("load", showLocalStoredCities());
+storageContainerEl.addEventListener("load", showLocalStoredCities());
 userFormEl.addEventListener("submit", formHandler);
