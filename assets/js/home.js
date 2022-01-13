@@ -22,24 +22,30 @@ const displayCurrent = (cityForecast, city) => {
 
   //name
   cityName.textContent = cityForecast.name;
+
   //date
   let today = new Date();
   const todaydate = today.toISOString().split("T")[0];
   cityDate.textContent = `(${todaydate})`;
+
   //icon
-  cityWeatherIcon.textContent =
-    "<a href=http://openweathermap.org/img/wn/" +
-    cityForecast.weather[0].icon +
-    "@2x.png></a>";
+  const oneIconEl = document.createElement("img");
+  oneIconEl.src = `http://openweathermap.org/img/wn/${cityForecast.weather[0].icon}@2x.png`;
+
+  cityWeatherIcon.appendChild(oneIconEl);
+
   //temp
   cityTemp.textContent = `
 Temperature (K): ${cityForecast.main.temp}`;
+
   //humidity
   cityHumidity.textContent = `
 Humidity: ${cityForecast.main.humidity}`;
+
   //wind.speed
   cityWind.textContent = `
   wind speed: ${cityForecast.wind.speed}`;
+
   //uvi
   const uviUrl =
     "https://api.openweathermap.org/data/2.5/onecall?lat=" +
@@ -63,37 +69,61 @@ UVI: ${data.current.uvi}`;
     .catch((err) => alert("Unable to connect"));
 };
 const displayFuture5 = (dataArr) => {
-  console.log(dataArr);
+  // console.log(dataArr);
   if (dataArr.length === 0) {
     futureContainerEl.textContent = "No data found.";
     return;
   }
-  // for (let i = 0; i < dataArr.length; i++) {
-  //   const sectionEl = document.createElement("div");
 
-  //   const dateEl = document.createElement("span");
-  //   var targetDate = new Date();
-  //   targetDate.setDate(targetDate.getDate() + i + 1);
-  //   const thedate = targetDate.toISOString().split("T")[0];
-  //   dateEl.textContent = `${thedate} or ${dataArr.dt_txt}`;
+  futureContainerEl.textContent = "";
 
-  //   const iconEl = document.createElement("span");
-  //   console.log(dataArr.weather);
-  //   // iconEl.textContent = `${dataArr.weather[0].icon}`;
-  //   const tempEl = document.createElement("span");
-  //   tempEl.textContent = `Temperature in Kelvin: ${dataArr.main.temp}`;
-  //   const windEl = document.createElement("span");
-  //   windEl.textContent = `Wind speed: ${dataArr.wind.speed}`;
-  //   const humidEl = document.createElement("span");
-  //   humidEl.textContent = `Humidity: ${dataArr.main.humidity}`;
+  for (let i = 0; i < dataArr.length; i++) {
+    const sectionEl = document.createElement("div");
+    sectionEl.classList =
+      "list-item flex-row justify-space-between align-center";
 
-  //   sectionEl.appendChild(dateEl);
-  //   sectionEl.appendChild(iconEl);
-  //   sectionEl.appendChild(tempEl);
-  //   sectionEl.appendChild(windEl);
-  //   sectionEl.appendChild(humidEl);
-  //   citiesForecastEl.appendChild(sectionEl);
-  // }
+    //date
+    const dateEl = document.createElement("span");
+    //   var targetDate = new Date();
+    //   targetDate.setDate(targetDate.getDate() + i + 1);
+    //   const thedate = targetDate.toISOString().split("T")[0];
+    //   dateEl.textContent = `${thedate} `;
+    dateEl.classList = "col-12 col-md-12";
+    dateEl.textContent = `Date: ${dataArr[i].dt_txt}`;
+    sectionEl.appendChild(dateEl);
+
+    //icon
+    //debug notes
+    //console.log(dataArr.weather);//was missing dataArr[i]... so couldn't console log
+    //after multiple times of NG...first a tag (not required to add the href link), then img tag with src
+    const iconEl = document.createElement("a");
+    iconEl.classList = "col-12 col-md-12";
+    // iconEl.textContent = `http://openweathermap.org/img/wn/${dataArr[i].weather[0].icon}@2x.png`;
+    const imglinkEl = document.createElement("img");
+    imglinkEl.src = `http://openweathermap.org/img/wn/${dataArr[i].weather[0].icon}@2x.png`;
+    iconEl.appendChild(imglinkEl);
+    sectionEl.appendChild(iconEl);
+
+    //temp
+    const tempEl = document.createElement("span");
+    tempEl.classList = "col-12 col-md-12";
+    tempEl.textContent = `Temperature in Kelvin: ${dataArr[i].main.temp}`;
+    sectionEl.appendChild(tempEl);
+
+    //wind
+    const windEl = document.createElement("span");
+    windEl.classList = "col-12 col-md-12";
+    windEl.textContent = `Wind speed: ${dataArr[i].wind.speed}`;
+    sectionEl.appendChild(windEl);
+
+    //humidity
+    const humidEl = document.createElement("span");
+    humidEl.classList = "col-12 col-md-12";
+    humidEl.textContent = `Humidity: ${dataArr[i].main.humidity}`;
+    sectionEl.appendChild(humidEl);
+
+    futureContainerEl.appendChild(sectionEl);
+  }
 };
 
 //helper function - current
@@ -129,7 +159,7 @@ const get5 = function (city) {
     .then((res) => {
       if (res.ok) {
         res.json().then((threehourData) => {
-          console.log(threehourData);
+          // console.log(threehourData);
           let fiveDataArr = [];
           for (i = 0; i < threehourData.list.length; i++) {
             //take the weather at 3*3h (9 in the morning)
@@ -137,7 +167,7 @@ const get5 = function (city) {
               fiveDataArr.push(threehourData.list[i]);
             }
           }
-          console.log(fiveDataArr);
+          // console.log(fiveDataArr);
           displayFuture5(fiveDataArr);
         });
       } else {
@@ -153,7 +183,7 @@ const formHandler = (event) => {
 
   const city = cityEl.value.trim();
 
-  // getCurrent(city);
+  getCurrent(city);
   get5(city);
   cityEl.textContent = "";
 };
