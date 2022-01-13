@@ -211,7 +211,7 @@ const createStorageEl = (stored) => {
 };
 
 // shows both current and future forecast
-const formHandler = (event) => {
+const formHandler = function (event) {
   event.preventDefault();
 
   const city = cityEl.value.trim();
