@@ -2,7 +2,7 @@
 
 ## Deployed App
 
-[Link](https://ladystephani.github.io/API-use-forForecast/)
+[Link](https://floating-river-93695.herokuapp.com/)
 
 ## Description
 
